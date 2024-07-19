@@ -58,7 +58,7 @@ function getWeatherDetails(name, lat, lon, country, state){
                 </div>
                 <div class="item">
                     <p>PM10</p>
-                    <h2>${pm10}_</h2>
+                    <h2>${pm10}</h2>
                 </div>
                 <div class="item">
                     <p>SO2</p>
@@ -86,68 +86,66 @@ function getWeatherDetails(name, lat, lon, country, state){
                 </div>
             </div>`;
     }).catch(() => {
-        alert("failed to fetch air quality index");
-    })
+        alert("Failed to fetch air quality index");
+    });
 
     fetch(WEATHER_API_URL).then(res => res.json()).then(data => {
         let date = new Date();
         currentWeather.innerHTML = `
             <div class="current-weather">
-                        <div class="deatails">
-                            <p>NOW</p>
-                            <h2>${(data.main.temp - 273.15).toFixed(2)}&deg;C</h2>
-                            <p>${data.weather[0].description}</p>
-                        </div>
-                        <div class="weather-icon">
-                            <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png"
-                             alt="weather right now">
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="card-footer">
-                        <p><i class="fa-regular fa-calendar"></i>${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}</p>
-                        <p><i class="fa-solid fa-location-dot"></i>${name}, ${country}</p>
-                    </div>
+                <div class="deatails">
+                    <p>NOW</p>
+                    <h2>${(data.main.temp - 273.15).toFixed(2)}&deg;C</h2>
+                    <p>${data.weather[0].description}</p>
+                </div>
+                <div class="weather-icon">
+                    <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" alt="weather right now">
+                </div>
+            </div>
+            <hr>
+            <div class="card-footer">
+                <p><i class="fa-regular fa-calendar"></i>${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}</p>
+                <p><i class="fa-solid fa-location-dot"></i>${name}, ${country}</p>
+            </div>
         `;
         let {sunrise, sunset} = data.sys,
-        {timezone, visibitity} = data,
-        {humidity, pressure, feels_like} = data.main,
-        {speed} = data.wind,
-        sRiseTime = moment.utc(sunrise, 'X').add(timezone, 'seconds').format('hh:mm, A'),
-        sSetTime = moment.utc(sunset, 'X').add(timezone, 'seconds').format('hh:mm, A');
+            {timezone, visibility} = data,
+            {humidity, pressure, feels_like} = data.main,
+            {speed} = data.wind,
+            sRiseTime = moment.utc(sunrise, 'X').add(timezone, 'seconds').format('hh:mm, A'),
+            sSetTime = moment.utc(sunset, 'X').add(timezone, 'seconds').format('hh:mm, A');
         sunriseCard.innerHTML = `
-        <div class="card-head">
-            <p>Sunrise & Sunset</p>
-        </div>
-        <div class="sunrise-sunset">
-            <div class="item">
-                <div class="icon">
-                    <i class="fa-regular fa-sun fa-4x"></i>
+            <div class="card-head">
+                <p>Sunrise & Sunset</p>
+            </div>
+            <div class="sunrise-sunset">
+                <div class="item">
+                    <div class="icon">
+                        <i class="fa-regular fa-sun fa-4x"></i>
+                    </div>
+                    <div>
+                        <p>Sunrise</p>
+                        <h2>${sRiseTime}</h2>
+                    </div>
                 </div>
-            <div>
-            <p>Sunrise</p>
-                <h2>${sRiseTime}</h2>
+                <div class="item">
+                    <div class="icon">
+                        <i class="fa-regular fa-moon fa-4x"></i>
+                    </div>
+                    <div>
+                        <p>Sunset</p>
+                        <h2>${sSetTime}</h2>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="item">
-            <div class="icon">
-                <i class="fa-regular fa-moon fa-4x"></i>
-            </div>
-            <div>
-                <p>Sunset</p>
-                <h2>${sSetTime}</h2>
-            </div>
-            </div>
-        </div>
         `;
         humidityVal.innerHTML = `${humidity}%`;
         pressureVal.innerHTML = `${pressure} hPa`;
-        visibilityVal.innerHTML = `${visibitity / 1000} Km`;
+        visibilityVal.innerHTML = visibility ? `${(visibility / 1000).toFixed(1)} Km` : 'N/A';
         WindSpeedVal.innerHTML = `${speed} m/s`;
         feelsVal.innerHTML = `${(feels_like - 273.15).toFixed(2)}&deg;C`;
-
     }).catch(() => {
-        alert(`Failed to fetch current visibility`);
+        alert(`Failed to fetch current weather data`);
     });
 
     fetch(FORECAST_API_URL).then(res => res.json()).then(data => {
@@ -177,7 +175,7 @@ function getWeatherDetails(name, lat, lon, country, state){
             }
         });
         fiveDaysForecastCard.innerHTML = ``;
-        for(i = 1; i< fiveDaysForecast.length; i++){
+        for(i = 1; i < fiveDaysForecast.length; i++){
             let date = new Date(fiveDaysForecast[i].dt_txt);
             fiveDaysForecastCard.innerHTML += `
                 <div class="forecast-item">
@@ -196,7 +194,7 @@ function getWeatherDetails(name, lat, lon, country, state){
     });
 }
 
-function getCityCordinates(){
+function getCityCoordinates(){
     let cityName = cityInput.value.trim();
     cityInput.value = '';
     if(!cityName) return;
@@ -222,14 +220,16 @@ function getUserCoordinates(){
             let {name, country, state} = data[0];
             getWeatherDetails(name, latitude, longitude, country, state);
         }).catch(() => {
-            alert("failed to fetch user coordinates");
-        })
-    },error => {
+            alert("Failed to fetch user coordinates");
+        });
+    }, error => {
         if(error.code === error.PERMISSION_DENIED){
-            alert("Geolocation permission denied. please reset location permission to grant access again");
+            alert("Geolocation permission denied. Please reset location permission to grant access again");
         }
     });
 }
 
-searchBtn.addEventListener('click', getCityCordinates);
+searchBtn.addEventListener('click', getCityCoordinates);
 locationBtn.addEventListener('click', getUserCoordinates);
+cityInput.addEventListener('keyup', e => e.key === 'Enter' && getCityCoordinates());
+window.addEventListener('load', getUserCoordinates);
