@@ -300,6 +300,6 @@ hr{
 
 @media(max-width: 380px){
     .weather-data .weather-right .highlights .air-indices{
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2);
     }
 }
