@@ -42,7 +42,7 @@ hr{
     background-color: var(--bg-color2);
     border: none;
     padding: 12px;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 25px;
     color: whitesmoke;
 }
@@ -54,7 +54,7 @@ hr{
     background-color: whitesmoke;
     border: none;
     padding: 12px;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 25px;
     cursor: pointer;
 } 
@@ -63,23 +63,23 @@ hr{
     background-color: rgb(239, 73, 7);
     border: none;
     padding: 12px;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 25px;
     cursor: pointer ;
 }
 
 .card {
     background-color: var(--bg-color2);
-    padding: 15px;
+    padding: 10px;
     border-radius: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     & p {
-        font-size: 14px;
+        font-size: 10px;
         color: rgba(124, 124, 124, 0.982);
     }
     & h2 {
         margin: 7px 0; 
-        font-size: 32px;
+        font-size:  28px;
         font-weight: 500;
     }
 }
@@ -163,12 +163,16 @@ hr{
                 }
             }
             & .sunrise-sunset{
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+                margin-top: 20px;
                 & .item{
                     display: flex;
                     align-items: center;
-                    gap: 10px;
+                    gap: 30px;
+                    margin-bottom: 25px;
                     & h2{
                         margin-top: 10px;
                     }
