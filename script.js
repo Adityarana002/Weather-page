@@ -55,7 +55,7 @@ function getWeatherDetails(name, lat, lon, country, state){
                 <div class="item">
                     <p>PM2.5</p>
                     <h2>${pm2_5}</h2>
-                </div>
+                </div>  
                 <div class="item">
                     <p>PM10</p>
                     <h2>${pm10}</h2>
@@ -198,7 +198,7 @@ function getCityCoordinates(){
     let cityName = cityInput.value.trim();
     cityInput.value = '';
     if(!cityName) return;
-    let GEOCODING_API_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${api_key}`;
+    let GEOCODING_API_URL = `httpss://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${api_key}`;
     fetch(GEOCODING_API_URL).then(res => res.json()).then(data => {
         if(data.length === 0){
             alert(`City not found`);
